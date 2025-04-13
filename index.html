@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypothesis Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #000000;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            color: #FFFFFF;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            padding: 20px;
+        }
+        .card {
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border: none;
+            transition: transform 0.3s ease;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: white;
+            border-radius: 20px 20px 0 0 !important;
+            padding: 30px;
+        }
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+        }
+        .card-header p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            color: #CCCCCC;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #E53935 0%, #B71C1C 100%);
+            border: none;
+            padding: 12px 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.4);
+            background: linear-gradient(135deg, #B71C1C 0%, #7F0000 100%);
+        }
+        .form-control {
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #333333;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            background-color: #1a1a1a;
+            color: #FFFFFF;
+        }
+        .form-control:focus {
+            border-color: #E53935;
+            box-shadow: 0 0 0 0.2rem rgba(229, 57, 53, 0.15);
+            background-color: #1a1a1a;
+            color: #FFFFFF;
+        }
+        .form-control::placeholder {
+            color: #666666;
+            font-weight: 300;
+        }
+        #result {
+            white-space: pre-line;
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #E53935;
+            animation: fadeIn 0.5s ease;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: #CCCCCC;
+        }
+        #result strong {
+            color: #E53935;
+            font-weight: 600;
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            text-decoration: underline;
+            text-underline-offset: 5px;
+            text-decoration-thickness: 2px;
+        }
+        #result ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-left: 0;
+            margin-top: 10px;
+        }
+        #result li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            color: #CCCCCC;
+            line-height: 1.6;
+        }
+        #result li:before {
+            content: "●";
+            color: #E53935;
+            position: absolute;
+            left: 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .loading {
+            display: none;
+        }
+        .loading .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #E53935;
+        }
+        .topic-label {
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .card-body {
+            padding: 35px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-section {
+            margin-top: 30px;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .copy-btn {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background: #333333;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+        }
+        .copy-btn:hover {
+            background: #444444;
+            transform: translateY(-2px);
+        }
+        .result-container {
+            position: relative;
+        }
+        .loading p {
+            font-family: 'Poppins', sans-serif;
+            color: #CCCCCC;
+            font-size: 1rem;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card animate__animated animate__fadeIn">
+            <div class="card-header text-center">
+                <h2 class="animate__animated animate__fadeInDown">Hypothesis Generator</h2>
+                <p class="mb-0 animate__animated animate__fadeInUp">Enter your research topic to generate a detailed hypothesis</p>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <label for="topic" class="topic-label">Research Topic</label>
+                    <input type="text" class="form-control" id="topic" placeholder="Enter your research topic">
+                </div>
+                <button class="btn btn-primary w-100 animate__animated animate__pulse" onclick="generateHypothesis()">
+                    Generate Hypothesis
+                </button>
+                
+                <div class="loading text-center my-4">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Generating your hypothesis...</p>
+                </div>
+
+                <div class="result-section">
+                    <div id="result" class="result-container" style="display: none;">
+                        <button class="copy-btn" onclick="copyToClipboard()">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function generateHypothesis() {
+            const topic = document.getElementById('topic').value.trim();
+            if (!topic) {
+                alert('Please enter a topic');
+                return;
+            }
+
+            const resultDiv = document.getElementById('result');
+            const loadingDiv = document.querySelector('.loading');
+            
+            resultDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+
+            try {
+                const response = await fetch('/generate_hypothesis', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ topic }),
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Format the response text
+                    let formattedText = data.hypothesis;
+                    
+                    // Define the six main points to look for
+                    const mainPoints = [
+                        'Main Hypothesis Statement',
+                        'Supporting Sub-hypotheses',
+                        'Key Variables',
+                        'Research Methods',
+                        'Expected Outcomes',
+                        'Limitations'
+                    ];
+                    
+                    // First, split the text into sections
+                    const sections = formattedText.split('\n\n');
+                    
+                    // Process each section
+                    formattedText = sections.map(section => {
+                        // Check for numbered sections (1-6)
+                        if (section.match(/^\d+\.\s+[A-Za-z\s-]+/)) {
+                            return section.replace(/^(\d+\.\s+[A-Za-z\s-]+)/, '<strong style="color: #E53935; text-decoration: underline; font-size: 1.2rem; display: block; margin: 20px 0 10px 0;">$1</strong>');
+                        }
+                        // Check for any of the main points without numbers
+                        mainPoints.forEach(point => {
+                            if (section.includes(point)) {
+                                section = section.replace(new RegExp(point, 'g'), `<strong style="color: #E53935; text-decoration: underline; font-size: 1.2rem; display: block; margin: 20px 0 10px 0;">${point}</strong>`);
+                            }
+                        });
+                        return section;
+                    }).join('\n\n');
+                    
+                    // Convert bullet points to list items
+                    formattedText = formattedText.replace(/●\s+(.+)/g, '<li>$1</li>');
+                    
+                    // Wrap bullet points in ul
+                    formattedText = formattedText.replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
+                    
+                    resultDiv.innerHTML = `<button class="copy-btn" onclick="copyToClipboard()">
+                        <i class="bi bi-clipboard"></i> Copy
+                    </button>${formattedText}`;
+                    resultDiv.style.display = 'block';
+                    resultDiv.classList.add('animate__animated', 'animate__fadeIn');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        function copyToClipboard() {
+            const resultDiv = document.getElementById('result');
+            const text = resultDiv.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const copyBtn = resultDiv.querySelector('.copy-btn');
+                copyBtn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                }, 2000);
+            });
+        }
+
+        // Add animation to input field on focus
+        document.getElementById('topic').addEventListener('focus', function() {
+            this.classList.add('animate__animated', 'animate__pulse');
+        });
+
+        document.getElementById('topic').addEventListener('blur', function() {
+            this.classList.remove('animate__animated', 'animate__pulse');
+        });
+    </script>
+</body>
+</html> 
